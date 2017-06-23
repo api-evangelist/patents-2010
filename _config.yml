@@ -21,7 +21,7 @@ paginate: 25
 paginate_path: "/blog/page:num"
 
 github_user: api-evangelist
-github_repo: patents
+github_repo: patents-2010
 github_branch: gh-pages
 
 # Footer
