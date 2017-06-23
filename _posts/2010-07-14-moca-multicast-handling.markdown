@@ -1,0 +1,141 @@
+---
+
+title: MoCA multicast handling
+abstract: An apparatus and methods for transmitting information over a home coax network are provided. A method according to the invention for transmitting information over a home coax network preferably includes adding a multicast transmission mode to a system that previously only had unicast transmission mode and broadcast mode. The method preferably includes broadcasting multicast (“MC”) traffic. The MC traffic may be directed to a predetermined MC group. The MC traffic may be transmitted from an ingress node to a plurality of egress nodes. A portion of the plurality of egress nodes may belong to the MC group. Upon receipt by at least one of the egress nodes of the MC traffic, the method may further include using the at least one egress node to filter the received MC traffic to determine whether the MC traffic is directed to a group for which the egress node is a member.
+url: http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&S1=08867355&OS=08867355&RS=08867355
+owner: Broadcom Corporation
+number: 08867355
+owner_city: Irvine
+owner_country: US
+publication_date: 20100714
+---
+This application is a non provisional application of U.S. Provisional Patent Application No. 61 225 318 filed on Jul. 14 2009 and U.S. Provisional Patent Application No. 61 229 174 filed on Jul. 28 2009 which are hereby incorporated by reference herein in their respective entireties.
+
+The present invention relates generally to information networks and specifically to transmitting information such as media information over communication lines such as coaxial cable hereinafter coax thereby to form a communications network.
+
+Home network technologies having a packet aggregation functionality are known generally. The Multimedia over Coax Alliance MoCA at its website mocalliance.org provides an example of a suitable specification MoCA 1.0 for networking of digital video and entertainment through existing coaxial cable in the home which has been distributed to an open membership. Packet aggregation functionality is not provided. MoCA 1.0 specification is incorporated by reference herein in its entirety.
+
+Home networking over coax taps into the vast amount of unused bandwidth available on in home coax. More than 70 of homes in the United States have coax already installed in the home infrastructure. Many have existing coax in one or more primary entertainment consumption locations such as family rooms media rooms and master bedrooms ideal for deploying networks. Home networking technology allows homeowners as well as service providers to utilize this infrastructure as a networking system and to deliver other entertainment and information programming with high QoS Quality of Service .
+
+The technology underlying home networking over coax provides high speed high QoS and the innate security of a shielded wired connection combined with state of the art packet level encryption. Coax is designed for carrying high bandwidth video. Today it is regularly used to securely deliver millions of dollars of pay per view and premium video content on a daily basis. Home networking over coax can also be used as a backbone for multiple wireless access points used to extend the reach of wireless network throughout a consumer s entire home.
+
+Home networking over coax provides a consistent high throughput high quality connection through the existing coaxial cables to the places where the video devices currently reside in the home without affecting the existing analog or digital services present on the cable. Home networking over coax provides a primary link for digital entertainment and may also act in concert with other wired and wireless networks to extend the entertainment experience throughout the home.
+
+Currently home networking over coax works with access technologies such as ADSL and VDSL services or Fiber to the Home FTTH that typically enter the home on a twisted pair or on an optical fiber operating in a frequency band from a few hundred kilohertz to 8.5 MHz for ADSL and 12 MHz for VDSL. As services reach the home via xDSL or FTTH they may be routed via home networking over coax technology and the in home coax to the video devices. Cable functionalities such as video voice and Internet access may be provided to homes via coaxial cable by cable operators and use coaxial cables running within the homes to reach individual cable service consuming devices locating in various rooms within the home. Typically home networking over coax type functionalities run in parallel with the cable functionalities on different frequencies.
+
+The coax infrastructure inside the house typically includes coaxial wires and splitters. Splitters used in homes typically have one input and two or more outputs and are designed to transfer signals from input to outputs in the forward direction or from outputs to input in the backward direction and to isolate splitter outputs and prevent signals from flowing room outlet to room outlet. Isolation is useful in order to a reduce interference from other devices and b maximize power transfer from Point Of Entry POE to outlets for best TV reception.
+
+The MoCA technology is specifically designed to go backwards through splitters insertion and go from splitter output to output isolation . All outlets in a house can be reached from each other by a single isolation jump and a number of insertion jumps . Typically isolation jumps have an attenuation of 5 to 40 dB and each insertion jump attenuates approximately 3 dB. MoCA has a dynamic range in excess of 55 dB while supporting 200 Mbps throughput. Therefore MoCA can work effectively through a significant number of splitters.
+
+MoCA is a managed network that is unlike some other home networking technologies. It is specifically designed to support streaming video without packet loss thus providing very high video quality between outlets.
+
+Digital cable programming is delivered with very low Packet Error Rate PER e.g. of below 1e 6. The home network should preferably have similar or better performance so as not to degrade viewing.
+
+The disclosures of any publications and patent documents mentioned in the specification and of the publications and patent documents cited therein directly or indirectly are hereby incorporated by reference.
+
+One issue with legacy MoCA 1.x mapping of Ethernet frames for network distribution as corresponding MoCA frames is that Ethernet frames include three different transmission types while MAC MoCA frames which operate on a shared medium i.e. wherein communication is either one to many or a one to all include only two types of frames. It would be desirable to map legacy Ethernet frames in a one to one mapping scheme onto MAC MoCA frames.
+
+A system and or method for transmitting information over a home communications network substantially as shown in and or described in connection with at least one of the figures as set forth more completely in the claims.
+
+The table below lists all possible transmission cases regarding suitable Ethernet frames and their corresponding MoCA frames. The Ethernet frames are typically received from by a MoCA node from its respective Ethernet Convergence Layer ECL for use with apparatus and methods according to the present invention. For the purposes of this application the node that receives the Ethernet frame is identified as the ingress node. It should be noted that such frames may be Ethernet frames as defined by IEEE 802.3 standard or as defined by some other suitable standard.
+
+It should be noted that with the respect to the above identified Ethernet Frames Addressing Type The Ethernet Frame Addressing Type specifies the frame type i.e. an Ethernet frame with a unicast multicast or broadcast destination address specifies respectively a unicast multicast or broadcast frame. A MoCA node ID is the MoCA equivalent to an Ethernet MAC destination address. As with Ethernet addressing a MoCA frame with a unicast multicast or broadcast node ID is respectively a unicast multicast or broadcast frame.
+
+For the purposes of this application a profile is a parametric definition for transmission on the MoCA PHY layer. For example a MoCA unicast frame is transmitted with both the transmitter and single recipient configured with a set of parameters known as a profile which is specific to a point to point link. MoCA broadcast and multicast frames are transmitted with the transmitter and all the receivers participating in the transmission. Consequently the transmitter and all the recipients are configured with the point to multipoint profile.
+
+As stated above one issue with mapping Ethernet frames for network distribution as corresponding MoCA frames is that Ethernet frames include three different addressing types unicast broadcast and multicast while MAC MoCA frames which operate on a shared medium include only two types unicast and broadcast .
+
+Specifically Ethernet addressing includes unicast the sending of messages to a single network destination host on a network broadcast the sending of messages to all possible destinations on a network and multicast the sending of messages only to interested destinations by using special addressing assignments transmissions while MoCA addressing include unicast and broadcast. Accordingly in legacy MoCA network Media Access Control MAC multicast MC frames typically have to be transmitted as broadcast frames thereby consuming more computing resources on the receiving nodes than necessary.
+
+Apparatus and methods for transmitting information over a home coax network are provided. These apparatus and methods may distinguish between Ethernet MAC MC frames and MAC broadcast frames broadcasted on MoCA. These apparatus and methods are based on a need to maintain certain nodes in a power saving mode during MC traffic for the purposes of this application the term traffic is substantially synonymous with a plurality of transmitted frames .
+
+These apparatus and methods are also based on a need to efficiently transmit MC messages in MoCA. Specifically such apparatus and methods may further optimize MC handling on a MAC by configuring an egress node i.e. a node that receives traffic from an ingress node to filter out MAC MC frames for MC groups to which the node is not registered.
+
+When a node is in power saving alternatively referred to herein as standby mode or sleep mode it may still be configured to receive MAC unicast and MAC broadcast frames in order to maintain network connectivity for higher layer protocols but the node may not receive MC traffic i.e. the traffic typically in the form of MC frames because a node in power saving mode will preferably not be part of any MC group. Accordingly these apparatus and methods are based at least in part on a need to keep nodes asleep during MC traffic.
+
+Another aspect of the invention relates to preventing sleeping nodes from affecting the network performance. For example a sleeping node may under certain circumstances lower the operational aspect of the broadcast profile in order to match the highest common profile of any of the nodes. Such an aspect of the invention may improve network performance by increasing in certain circumstances the network performance by raising the operational profile of the network.
+
+For the purposes of this application and as defined generally above the profile should be understood as the way to program the transmitter module at the ingress node and or the receiving module at the egress node s so that a packet will be transmitted and or received appropriately over the medium s physical link.
+
+Accordingly apparatus and methods may preferably discriminate between Ethernet MAC MC frames and Ethernet MAC broadcast frames that are broadcasted on MoCA.
+
+As stated above certain embodiments of the invention may also be used for power management. Such power management may include maintaining a node in a power saving mode during certain MC traffic. It should be noted that with respect to power saving implementations of the invention the characteristic of a MoCA link is affected by each node turning ON its receiver. Such receivers may be turned ON at different times. Whenever all the nodes turn their respective receivers ON to receive a frame transmitted in a broadcast mode the network has a given characteristic.
+
+In certain embodiments of the invention when some nodes are in power saving mode and only a subset of full power nodes referred to herein in the alternative as active mode are configured to receive an MC frame transmitted in broadcast mode preferably not all the nodes will turn their receiver ON to receive the frame transmitted in broadcast mode. Accordingly the line has a characteristic different from that in broadcast mode described above where all the nodes are turning their receiver ON regardless of the node s power mode.
+
+It should be noted that according to one aspect of the invention an MC profile according to the invention may preferably be implemented as a broadcast profile for the subset of active nodes or for another suitable MC group while the legacy broadcast profile is a profile for all active and sleeping nodes. At stated above this is because MoCA is a shared medium.
+
+Accordingly in addition to the per transmitter legacy broadcast profile which is determined for the circumstance where all the nodes with the exception of the transmitter node turn ON their respective receivers to receive the broadcast MoCA frame the invention preferably may implement an MC profile for each transmitter which is calculated for all the active nodes with the exception of the transmitter node thus enabling their receivers to receive the broadcast MoCA frame.
+
+A sleeping node preferably will not participate at all in MC traffic. Therefore a sleeping node does not have to turn its receiver ON in response to a predetermined MC transmission profile.
+
+An active node may preferably turn ON its receiver whenever an Ethernet MAC MC frame is transmitted in broadcast mode over MoCA to maintain the characteristic of the MoCA medium in accordance with the MC profile but preferably will not receive i.e. store and process the MC frames from MC groups not registered to the node. In some embodiments of the invention the information required to discriminate between MC groups that the node is registered to and MC groups that the node is not registered to is preferably received from a MoCA device management entity and implemented at the MoCA level. Such discrimination is preferably performed while parsing the MC MAP frame.
+
+Nodes may preferably incorporate one of three possible types of node IDs one for unicast one for MC and one for broadcast in the place of the legacy two types of node IDs unicast and broadcast . Specifically a given MC node ID according to the invention may preferably be used to map to a given MC group.
+
+An embodiment of the invention may preferably optimize MC performance on MoCA by discovering if one of multiple egress nodes is registered to a given MC group. In the case that a single egress node only is registered to a given MC group the MC frame may be transmitted to this single node as a unicast transmission. Such an embodiment may be more efficient than transmitting as a broadcast transmission.
+
+In certain embodiments of the invention filtering methods according to the invention may allow an egress node to filter out MC MoCA traffic assigned to a group for which the egress node is not registered. These filtering methods are described in more detail below.
+
+More details of a first embodiment of filtering according to the invention follow. First Node IDs in the following range may be used for MC transmission Node ID range 0x10 . . . 0xFF except 0x3F. It should be noted that the invention can use any Node ID that has not been allocated to unicast 0x00 . . . 0x09 or broadcast 0x3F i.e. outside the range of unicast and not the single Node ID allocated to broadcast.
+
+Then the filtering may derive directly at both the ingress node and the egress node the MoCA Multicast NID from the MAC MC address as follows MC Node ID Hash MAC MC Modulo 0xFF 0x10 0x10 Use a non linear function which allows processing of a set of data and obtain some hash result based on the input data. In this first embodiment different sets of input data 48 bit MAC MC data may produce the same output data 8 bit Node ID . This occurrence is known as a collision. Such collisions may preferably be corrected at the ECL layer.Modulo eliminate a number of bits to conform to the Node ID convention.
+
+It should be noted that the hash function may either be CRC 8 such as CRC 8 CCITT a cyclic redundancy check used to detect accidental changes to raw computer data and commonly known and used in digital networks available at http www.itu.int rec T REC I.432.1 199902 I en or ATM or any suitable non linear polynomial.
+
+The MoCA MC egress node may receive a MAC MC address from the Host IGMP a communications protocol used to manage the membership of multicast groups IGMP is used by hosts and adjacent multicast routers to establish multicast group memberships . The MoCA MC egress node may use the MAC MC address to generate the corresponding MC Node ID. The egress node may preferably store this information in a database.
+
+In this embodiment of the invention the MoCA MC ingress node may also generate corresponding MC Node IDs for each multicast frame and use the MC Node ID as the destination Node ID in Reservation Request Request Elements RR s REs .
+
+In certain embodiments of the invention such a filtering method may preferably include no allocation of any MC Node IDs by the NC. Such a filtering method may also preferably optimize memory usage not require maintenance of a database at each node and may not require handling of one entry per MC in the ECL classifier.
+
+Furthermore such MC filtering as described above may be corrected as necessary at the ECL layer and does not affect nodes that are not members of any MC group. In addition such filtering may preferably not affect other power saving efforts at all.
+
+An additional embodiment of filtering according to the invention may be implemented as follows a MoCA MC may be uniquely identified by SOURCE NODE ID MC NODE ID in the MAP s data allocation units DAUs . The MC ingress node may assign unique MC NODE IDs for each MC MAC address. The MC egress node may broadcast notification frames to the other nodes in order to inform the other nodes to which MC groups the egress nodes belong.
+
+The filtering may further use the Node ID range 0x10 . . . 0xFF except 0x3F as Multicast Node ID. Each of the MC ingress nodes can maintain a forwarding MC table that includes information broadcast by the egress node in MC Notification messages. If the ingress node determines from the forwarding MC table that only one egress node is registered to a certain MC group then the ingress node may transmit the frame as a unicast transmission instead of a broadcast transmission to reach the single egress node.
+
+The MoCA MC egress nodes may receive MC MAC addresses from the Host IGMP. The MC egress nodes can maintain an egress MC table including MC MAC Addresses and the corresponding SOURCE NODE ID and MC NODE ID. Such a filtering embodiment may provide preferably no fault filtering and not involve the NC in allocating and maintaining MC CHAN IDs MC CHAN IDs are described below in more detail . It should be noted that such an embodiment may require the implementation of notification messages and the maintenance of a database at each node.
+
+In a portion of a method according to the invention egress nodes may broadcast i.e. transmit to additional node s the addition removal of a new MAC MC address to its own node in a mapping message. Such a message may include the following information MAC MC MC Bitmap NID where NID is the multicast node identification information that is being added to the MC mapping.
+
+In certain embodiments of the invention it should be noted that to add or remove a multicast address from an egress node may utilize the standard network device driver MC Application Programming Interfaces APIs of the host operating system OS .
+
+Further in certain embodiments of the invention ingress node may build a MC bitmap vector for each MAC MC by OR ing the MC mapping messages receiving from one or more of the egress nodes.
+
+Following the build of MC bitmap vector ingress node may preferably include 16 bit MC Bitmap vector in reservation request elements for multicast transmissions.
+
+In some embodiments of the invention a network controller node NC not shown as designated in may copy 16 bit MC Bitmap vector into the MAP DAU granting the multicast reservation request. More specifically the systems and methods according to the invention may use the DESTINATION NODE ID field in DAUs to indicate MC Channel ID MC CHAN ID i.e. the ID of the MoCA Physical channel being used to transmit with direct mapping from the MC MAC address.
+
+In certain embodiments of the invention the apparatus and methods may require no additional protocol. Specifically MAC MC to MoCA MC mapping should preferably be direct mapping as the mapping of layer 3 IP MC address to Layer 2 MAC MC addresses in order to avoid adding MoCA multicast mapping protocol. Furthermore the multicast ID may be allocated by the NC. In addition the apparatus and methods may utilize an OS s standard network device driver MC Application Programming Interfaces APIs for adding or removing an MC address . Preferably no lookup table is needed in the egress node for MAP parsing. Such embodiments may utilize 16 bit bitmask NID comparison.
+
+In view of the foregoing some embodiments of the invention may include one or more of the following features a unique MC profile per transmitter according to the invention and or preventing nodes in power saving state from affecting the MC traffic throughput.
+
+To simplify the discussion of MoCA power saving this application defines below in Table 2 three MoCA Core Power Saving states M M and M that correspond to the open Advanced Configuration Power Interface ACPI specifications www.acpi.info which is hereby incorporated by reference herein in its entirety.
+
+The following is one possible usage rule that may be implemented in embodiments of the present invention. MC traffic may use the following MC profile except in the case where 
+
+Link management protocol in general may be used to maintain control channel connectivity verify the physical connectivity of the data links correlate the link property information suppress downstream alarms and localize link failures for protection restoration purposes in multiple kinds of networks.
+
+Where all the three conditions above are met the MC transmissions may temporarily switch from MC profile to broadcast profile until the LMO sequence completes.
+
+Illustrative embodiments of apparatus and methods in accordance with the principles of the invention will now be described with reference to the accompanying drawings which form a part hereof. It is to be understood that other embodiments may be utilized and structural functional and procedural modifications may be made without departing from the scope and spirit of the present invention.
+
+As will be appreciated by one of skill in the art the invention described herein may be embodied in whole or in part as a method a data processing system or a computer program product. Accordingly the invention may take the form of an entirely hardware embodiment an entirely software embodiment or an embodiment combining software hardware and any other suitable approach or apparatus.
+
+Furthermore such aspects may take the form of a computer program product stored by one or more computer readable storage media having computer readable program code or instructions embodied in or on the storage media. Any suitable computer readable storage media may be utilized including hard disks CD ROMs optical storage devices magnetic storage devices and or any combination thereof. In addition various signals representing data or events as described herein may be transferred between a source and a destination in the form of electromagnetic waves traveling through signal conducting media such as metal wires optical fibers and or wireless transmission media e.g. air and or space .
+
+For the sake of clarity the foregoing description including specific examples of parameter values provided is sometimes specific to certain protocols such as those identified with the name MoCA and or Ethernet protocols. However this is not intended to be limiting and the invention may be suitably generalized to other protocols and or other packet protocols. The use of terms that may be specific to a particular protocol such as that identified by the name MoCA or Ethernet to describe a particular feature or embodiment is not intended to limit the scope of that feature or embodiment to that protocol specifically instead the terms are used generally and are each intended to include parallel and similar terms defined under other protocols.
+
+It is appreciated that software components of the present invention including programs and data may if desired be implemented in ROM read only memory form including CD ROMs EPROMs and EEPROMs or may be stored in any other suitable computer readable medium such as but not limited to disks of various kinds cards of various kinds and RAMs. Components described herein as software may alternatively be implemented wholly or partly in hardware if desired using conventional techniques.
+
+Features of the present invention which are described in the context of separate embodiments may be provided in combination in a single embodiment. Conversely features of the invention which are described for brevity in the context of a single embodiment may be provided separately or in any suitable subcombination.
+
+As will be appreciated by one of skill in the art the invention described herein may be embodied in whole or in part as a method a data processing system chip component or device or a computer program product. Accordingly the invention may take the form of an entirely hardware embodiment an entirely software embodiment or an embodiment combining software hardware and any other suitable approach or apparatus.
+
+The invention may be operational with numerous other general purpose or special purpose computing system environments or configurations. Examples of well known computing systems environments and or configurations that may be suitable for use with the invention include but are not limited to personal computers server computers hand held or laptop devices mobile phones and or other personal digital assistants PDAs multiprocessor systems microprocessor based systems set top boxes programmable consumer electronics network PCs minicomputers mainframe computers distributed computing environments that include any of the above systems or devices and the like. In a distributed computing environment devices that perform the same or similar function may be viewed as being part of a module even if the devices are separate whether local or remote from each other.
+
+The invention may be described in the general context of computer executable instructions such as program modules being executed by a computer. Generally program modules may include routines programs objects components data structures etc. that perform particular tasks or store or process data structures objects and other data types. The invention may also be practiced in distributed computing environments where tasks are performed by separate local or remote processing devices that are linked through a communications network. In a distributed computing environment program modules may be located in both local and remote computer storage media including memory storage devices.
+
+Thus MOCA multicast handling over a home network has been provided. Persons skilled in the art will appreciate that the present invention can be practiced by other than the described embodiments which are presented for purposes of illustration rather than of limitation.
+

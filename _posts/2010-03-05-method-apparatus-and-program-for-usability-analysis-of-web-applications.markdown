@@ -1,0 +1,169 @@
+---
+
+title: Method, apparatus, and program for usability analysis of web applications
+abstract: A usability analysis method of a web application including: a first step of acquiring a page transition log and operation logs on individual pages in the web application; a second step of detecting a segment having a specific page transition pattern in the page transition log; a third step of managing operation logs on individual pages included in the detected page transition pattern in relation to the individual pages; a fourth step of performing statistic processing on the managed operation logs and analyzing page utilization; and a fifth step of analyzing usability based on the page transition pattern and the page utilization.
+url: http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&S1=08930447&OS=08930447&RS=08930447
+owner: Hitachi, Ltd.
+number: 08930447
+owner_city: Tokyo
+owner_country: JP
+publication_date: 20100305
+---
+This invention relates to a method for usability analysis of web applications and in particular relates to a technique for analyzing usability of a web application which involves page transitions based on a workflow.
+
+In recent years a variety of services and works have been implemented in web applications. Improvement in performance of client terminals and server devices and advancement in web technologies as seen in AJAX Asynchronous JavaScript XML have brought web applications involving not simple page transitions represented by Google Maps into practical use.
+
+Furthermore an approach to supporting routine works that follow predetermined procedures has been tried with web applications. Such a web application provides a flowchart image for indicating a workflow and a guide image for supporting operations at each step of the workflow. A user manipulates the guide image following the workflow indicated in the flowchart image to pursue the routine work.
+
+In general it is demanded for a web application that even a user with low IT literacy can make full use of it. The usability level of the web application significantly affects working efficiency therefore high usability is demanded for a web application.
+
+The first thing to improve the usability of a web application is to grasp the actual conditions. The next thing is to analyze the conditions to improve the web application based on the result of the analysis. To grasp the conditions there are two techniques determining page transitions and determining utilization of pages.
+
+To determine page transitions there exist several techniques a technique to determine whether a user is lost the way in page transitions refer to JP 2003 281317 A a technique to determine a route accessed with high frequency refer to JP 2004 152209 A and a technique to check whether pages are accessed as desired by the producer refer to JP 2002 123516 A .
+
+The techniques disclosed in JP2003 281317A JP2004 152209A and JP2002 123516A are to be applied to web applications which simply repeat page transitions. For this reason it was sufficient that they merely determine the utilization of pages or transitions of pages. In the case of a web application involving page transitions based on a workflow however it is necessary to consider the relationship between page transitions leading to the efficiency of the workflow and utilization of pages leading to the efficiency of operations at work steps in the workflow.
+
+To improve the usability the following operations with logs indicating page utilization by a plurality of users and page transitions are required 1 detecting transition patterns which are likely to be problems such as returning repeating jumping and rerouting from the page transition patterns routes 2 listing pages which are likely to be problems and 3 analyzing the utilization of the pages operation logs through for example statistical processing. In particular the operation of step 2 requires the pages to be extracted for each transition pattern. The same page may appear at a plurality of points in a transition pattern then the page must be regarded as different pages. This may happen in rerouting a branch page appears twice at the first branch and a branch under rerouting. These two branches should be regarded as different pages to be managed in consideration of the order of appearance in analyzing operation logs. Accordingly it has been difficult for an inexperienced analyst to determine the usability of a web application within a short time by analyzing only operation logs.
+
+This invention is to solve the aforementioned problem and an object of this invention is to provide a method for usability analysis of web applications which can reliably analyze the usability of a web application involving page transitions.
+
+An representative example of the invention disclosed in this application is a usability analysis method of a web application including a first step of acquiring a page transition log and operation logs on individual pages in the web application a second step of detecting a segment having a specific page transition pattern in the page transition log a third step of managing operation logs on individual pages included in the detected page transition pattern in relation to the individual pages a fourth step of performing statistic processing on the managed operation logs and analyzing page utilization and a fifth step of analyzing usability based on the page transition pattern and the page utilization.
+
+A representative embodiment of this invention provides reliable analysis on the usability of a web application in consideration of correlations between transitions and utilization of pages.
+
+Hereinafter an embodiment of this invention will be described with reference to the accompanying drawings. In this description function blocks implemented by programs executed by processors in a computer system are expressed as modules or units.
+
+System Configuration illustrates an exemplary configuration of a computer system in this embodiment. illustrates an exemplary configuration of a client device in this embodiment. illustrates an exemplary configuration of a web server device in this embodiment. illustrates an exemplary configuration of a log analyzing server device in this embodiment.
+
+The computer system shown in includes one or more two in client devices one or more one in web server devices and one or more one in log analyzing server devices . The client devices the web server device and the log analyzing server device are interconnected via a network . It should be noted that the web server device and the log analyzing server device may be physically implemented in the same device.
+
+The client device shown in is a computer that uses web applications provided by the web server device . This client device includes an I O input and output device a processor a network interface and a memory .
+
+The I O device is an input device such as a keyboard or a mouse and an output device such as a display device for providing a user interface. The processor executes a web browser program a script engine program and a not shown OS operating system stored in the memory . The network interface is a communication interface for the client device to communicate data via the network . The memory stores programs to be executed by the processor and data to be used by these programs. The client device may further include an external storage device not shown .
+
+The web server device shown in is a computer that provides the client devices with services of applications. The web server device includes a network interface a processor a local disk an I O device and a memory .
+
+The network interface is a communication interface for the web server device to communicate data via the network . The processor executes a web server program a web application program and a function inserting program stored in the memory . Details of the operation of these programs will be described later. The web application program in this description is a workflow oriented web application program involving page transitions based on a workflow. The information defining the workflow is a workflow definition which is held in the local disk . The workflow definition is sufficient as long as it includes definition information of the workflow it may be held in a different server such as a database server or a different storage device.
+
+The local disk is a storage device composed of for example a magnetic disk device and a non volatile semiconductor memory. The local disk may be mounted in the web server device or may be an external storage device disposed outside the web server device .
+
+The I O device is an input device such as a keyboard or a mouse and an output device such as a display device for providing a user interface. The web server device does not need to have the I O device . In such a case the web server device is operated by the client device . The memory stores programs executed by the processor and data used by these programs.
+
+The log analyzing server device shown in analyzes page transition logs of applications running on the web browsers in the client devices and user operation logs on individual pages. The log analyzing server device includes a network interface a processor a local disk an I O device and a memory .
+
+The network interface is a communication interface for the log analyzing server device to communicate data via the network . The processor executes a log server program a log analyzing program and a log visualizing program stored in the memory . The local disk is a storage device composed of for example a magnetic disk device and a non volatile semiconductor memory it stores a route management table an operation log table a log per transition pattern management table a current task operation log table a transition pattern detection rule table and a utilization analysis policy table . The local disk may be mounted in the log analyzing server device or may be an external storage device disposed outside the log analyzing server device . Details of operations of the programs and configurations of the tables will be described later.
+
+The I O device is an input device such as a keyboard and a mouse and an output device such as a display device for providing a user interface. The log analyzing server device does not need to include the I O device . In such a case the log analyzing server device is operated by a client device . The memory stores programs to be executed by the processor and data to be used by these programs.
+
+In response to a user operation to the web browser the web browser module sends a request in accordance with the user operation. The request is transmitted via a typical HTTP Hyper Text Transfer Protocol protocol although the protocol for the request is not limited to the HTTP protocol.
+
+Upon receipt of the request a web server module requests a web application relevant to the received request to perform processing. The web application performs processing in accordance with the request to create a response and transfers the created response to a function inserting module . The function inserting module incorporates an operation log acquiring module into the transferred response to create a response and sends the created response to the web browser module . The operation log acquiring module is incorporated with a response filtering function included in the web server device such as ServletFilter function of Java EE ISAPI Internet Server Application Programming Interface filter function of IIS Internet Information Services . In this embodiment the operation log acquiring module is dynamically incorporated by the function inserting module however the operation log acquiring module may be incorporated in the web application in advance without using the function inserting module .
+
+Upon receipt of the response from the function inserting module the web browser module interprets the HTML Hyper Text Markup Language data in the received response and displays the result on the web browser. It further transfers the operation log acquiring module incorporated in the response to a script engine module . The operation log acquiring module performs required initialization and then acquires information on the user operation on the web browser in the client device in the form of an operation log. The web browser module sends the operation log acquired by the operation log acquiring module to the log server module in the log analyzing server device when a page transition occurs to the web browser for example. It should be noted that the page transition may be a page transition with or without communication via a network involved. The latter page transition without communication can be detected in rewriting a page in the web browser using a DOM Document Object Model or JavaScript technology.
+
+Every time the log server module receives an operation log from the web browser module the log server module stores the received operation log to the current task operation log table . The current task operation log table is a table for temporarily storing operation logs for a unit of work defined by the web application being operated in the client device for example from the start to the end of a workflow or from a log in to a log out which is referred to as current task . When a current task is finished information to be stored in the route management table and the operation log table is created based on the operation logs held in the current task operation log table and is appended to the tables.
+
+The log analyzing module integrally analyzes page transitions and user operations in individual pages based on the data held in the current task operation log table the route management table and the operation log table . The log visualizing module visualizes problems in usability in accordance with the result of the analysis by the log analyzing module .
+
+The log analyzing module executes such processing responsive to an instruction from an administrative user or in a batch at an appropriate time.
+
+The log analyzing module includes a page analysis unit an operation analysis unit and a utilization analysis unit . The page analysis unit analyzes page transitions. Specifically the page analysis unit refers to the transition pattern detection rule table to detect a specific transition pattern such as return repeat jump or reroute which could be a problem. The operation analysis unit analyzes user operation such as a click of a mouse and typing in a form on each page in the web browser. Concurrently it manages related operation logs for each transition pattern and each position in the order of appearance of pages in each transition pattern to analyze the operations. The utilization analysis unit refers to the results of analysis by the page analysis unit and the operation analysis unit and policy definitions in the utilization analysis policy table to analyze utilization of each page. The utilization analysis unit detects a problem on usability of the web application based on the result of the analysis on the utilization of the web pages. The page analysis unit the operation analysis unit and the utilization analysis unit are executed in this order when the log analyzing module is executed.
+
+The log visualizing module includes a utilization output unit a threshold control unit and a ranking calculation unit . The utilization output unit outputs the result of analysis by the utilization analysis unit . The output in this example means to create data to be outputted in the form of a table or to be displayed on a window of the web application in overlay display. The threshold control unit controls the thresholds for conditional expressions defined in the utilization analysis policy table refer to the thresholds and in to be the optimum for the web application of the analysis object. The ranking calculation unit quantitatively analyzes adaptability to the policy definitions defined in the utilization analysis policy table and if the analysis results in a plurality of problems in some policy it calculates their ranks priority degrees to solve the problems . For example the quantitative analysis of adaptability defines that if the condition is equal to or lower a smaller value indicates higher adaptability and if the condition is equal to or higher a greater value indicates higher adaptability.
+
+First the web browser module sends a request to show a web page to the web server device S . Upon receipt of the page request from the client device S the web server module invokes a web application relating to the page request S . Next the web application performs processing responsive to the page request received at step S to create a response and transfers the created response to the function inserting module S .
+
+The function inserting module inserts the operation log acquiring module into the transferred response S . The step S can be performed with a response filtering function such as the ServletFilter of Java EE included in the web server device .
+
+Next if the page request received at step S indicates start of a task YES at S the function inserting module proceeds to step S. It generates a new task ID and sets the task ID to the Cookie of the response S . If the received page request indicates finish of a task NO at S and YES at S the function inserting module proceeds to step S. It inserts a flag indicating finish of a task to the response S . Then the function inserting module sends the response to the client device S .
+
+The start and the finish of a task appearing at step S and S can be determined based on a request for the start or finish of the task or an event of pressing a specific button. The web server continues processing from step S to S until the web server device stops its operation S .
+
+The processing from step S to S uses the response filtering function included in the web server device but the web application may include a program fragment to perform the above described function in advance.
+
+Upon receipt of the response from the web server device S the web browser module invokes the script engine module and initializes the operation log acquiring module S . In the initialization at step S the web browser module sets an event listener for monitoring events of user operations on the web browser module . The operation log acquiring module captures operation log data of a user operation on the web browser module and appends the log data to an operation log array for temporarily toring log data in the web browser module S . Step S is repeated until an event of page transition occurs S .
+
+Upon occurrence of an event of page transition S the web browser module sends values of the task ID the page ID the operation log and the task finished flag to the log analyzing server device S . The client device continues processing from steps S to S until the web application running on the client device is finished S . In this embodiment operation log data for a page is bunched into an operation log to be sent to the log analyzing server device but the log data may be sent every time it is captured or in a bunch of a different unit.
+
+The log server module in the log analyzing server device receives the operation log from the client device and stores it in the current task operation log table S . Subsequently it ascertains whether the current task is finished with reference to the task finished flag S . If the current task is finished YES at S it performs current task finalization subroutine S . Details of step S will be described later. If the current task is not finished NO at S the log server module returns to step S and continues processing until the log analyzing server device stops its operation S .
+
+Before explaining the current task finalization subroutine configurations of the current task operation log table the route management table and the operation log table will be described.
+
+As described previously the current task operation log table shown in is a table for storing logs of user operations on the web browser in the client device . The current task operation log table stores task IDs page IDs and operation log data in relation to one another.
+
+The task IDs are identifiers for uniquely identifying tasks. The page IDs are identifiers for uniquely identifying pages. The operation log data indicates operations on the pages identified with the page IDs .
+
+The route management table shown in is a table for managing information on routes courses indicating transitions of web pages. The route management table manages route IDs and routing course information indicating transitions of web pages in relation to each other.
+
+The route IDs are identifiers for uniquely identifying routes indicating transitions of web pages. The routing information indicates transitions of web pages in the routes identified with the route IDs .
+
+The operation log table shown in is a table for managing operation log data in relation to the individual pages in routing information managed by the route management table . The operation log table manages route IDs page IDs and operation log data in relation to one another.
+
+The route IDs are identifiers for uniquely identifying routes and the same identifiers as the route IDs in the route management table are used. The page IDs are identifiers for uniquely identifying pages and the same identifiers as the page IDs in the current task operation log table are used. The operation log data indicates operations on the pages identified with the page IDs .
+
+In the case where the same page appears in a single route for a plurality of times the page is regarded as different pages to manage the operation log data. In URL appears twice in the route ID r but the second URL is identified as URL in . This example represents an aforementioned reroute operation. The data for the page IDs in the routing information in and the page IDs in may be data with or without communication via a network involved.
+
+First the log server module retrieves all page IDs and operation logs from the current task operation log table using the particular task ID as a key S . Next the log server module searches the route management table for routing information including the same route as the page transitions route directed from the page IDs retrieved at step S and retrieves the route ID if such routing information exists S .
+
+Next the log server module determines whether the same route exists in other words whether step S is successful to retrieve a route ID S . If the determination indicates that the same route exists YES at S the log server module updates each operation log each record in the operation log table of the related route ID and page ID for all page IDs S .
+
+If the determination at step S indicates that the same route does not exist NO at S the log server module generates a new route ID S . The log server module appends the route ID and a list of page IDs to the route management table S . Subsequently the module appends data relating the route ID the page ID and operation log data to the operation log table for each of the page IDs appended to the route management table S .
+
+As described above the log server module updates operation log data in the operation log table through the processing at step S and appends new routing information to the route management table and the operation log table through the processing from step S to step S.
+
+Before explaining processing of the page analysis unit the transition pattern detection rule table will be described. illustrates an exemplary transition pattern detection rule table in this embodiment and is another exemplary transition pattern detection rule table in this embodiment.
+
+The transition pattern detection rule table shown in includes transition pattern detection rules and names . The transition pattern detection rule table shown in includes transition pattern detection rules and names . The names and of the transition patterns are referred to in later described analysis using the utilization analysis policy table .
+
+The transition pattern detection rules shown in are based on only web page transitions without considering workflow definition. The transition pattern detection rules shown in are formed in consideration of the workflow definition and consist of combinations of web page transitions and information indicating whether the web page transition follows the workflow definition. The signs F shown in the transition pattern detection rules denote transitions in the forward direction following the workflow definition the signs R denote transitions in the reverse direction to the workflow definition the sign U denotes a transition undefined in the workflow definition. Pages are denoted as a b and c in additionally they may be individually labeled. For example in a rule applied to rerouting a may be labeled as branch step b may be labeled as back step and c may be labeled as reroute destination step. These labels are referred to in the later described analysis using the utilization analysis policy table .
+
+The page analysis unit in this embodiment refers to such a transition pattern detection rule table and detects a specific transition pattern using a detection rule based on regular expressions. The manner to define detection rules and the method to detect a transition pattern are not limited to the regular expression basis but they may be a different manner to define detection rules and a different method to detect a transition pattern.
+
+As described above the page analysis unit refers to the transition pattern detection rule table and detects a specific transition pattern from a plurality of page transition patterns.
+
+First the page analysis unit fetches a detection rule from the transition pattern detection rule table shown in or B S . Next the page analysis unit determines whether a detection rule exists in other words whether a detection rule has been fetched S .
+
+If a detection rule exists YES at S as a result of the determination the page analysis unit proceeds to step S. If a detection rule does not exist NO at S the page analysis unit terminates this page analysis. This step S is performed for every detection rule stored in the transition pattern detection rule table .
+
+At step S the page analysis unit fetches one record of page transition log the routing information in from the route management table . Next the page analysis unit determines whether a page transition log exists in other words whether the routing information has been fetched S .
+
+If a record of a page transition log exists YES at S as a result of the determination the page analysis unit proceeds to step S. If no record of page transition log exists NO at S it returns to step S to fetch the next detection rule. This step S is performed for every page transition log managed in the route management table .
+
+At step S the page analysis unit applies the detection rule fetched at step S to the page transition log fetched at step S to acquire a list of matching segments of the page transition log S . In this description a segmental transition log is a page transition log having a transition pattern matching with a detection rule. The processing at step S will be specifically explained with reference to .
+
+Then the page analysis unit determines whether a matching segmental transition log exists S . If a matching segmental transition log exists YES at S as a result of the determination the page analysis unit proceeds to step S. If no matching segmental transition log exists NO at S the page analysis unit returns to step S and fetches the next record of page transition log.
+
+At step S the page analysis unit relates transition patterns to links to the operation log table that manages operation logs in the pages that constitute the segmental transition logs acquired at step S and stores them in the log per transition pattern management table S . As previously mentioned if the same page appears in a transition pattern for a plurality of times the page analysis unit identifies the page as different pages in consideration of the positions in order of appearance to manage the operation logs.
+
+Through the processing explained above the page analysis unit obtains segmental transition logs matching with a detection rule and operation logs for the pages that constitute the segmental transition logs.
+
+First the page analysis unit creates a finite automaton from the detection rule fetched at step S in S . Next the page analysis unit fetches the first URL in the URL list from the page transition log fetched at S in S . Then the page analysis unit inputs the URL fetched at step S to the created finite automaton S .
+
+The page analysis unit determines whether the state of the finite automaton is valid S . If the state of the finite automaton is determined to be valid YES at S the page analysis unit proceeds to step S.
+
+If the state of the finite automaton is determined to be invalid NO at S the page analysis unit proceeds to step S to reset the state of the finite automaton S and if the next URL exists YES at S the page analysis unit fetches the next URL from the URL list S to proceed to step S and repeats the comparison.
+
+If the state of the finite automaton turns to accept at step S YES at S the page analysis unit registers a list of matching URLs as a segmental transition log S resets the finite automaton S and if the next URL exists YES at S fetches the next URL from the URL list S . Then it proceeds to step S to repeat the comparison.
+
+The transition pattern table manages routing information in the segmental transition logs which the page analysis unit has detected through the page transition analysis illustrated in . The transition pattern table manages pattern IDs which are identifiers for uniquely identifying segmental transition patterns and routing information indicating segmental page transitions in relation to each other. The routing information indicates segments of page transitions.
+
+The operation log per transition pattern management table is a table for managing operation logs on web pages in relation to a segment transition route it manages data in which pattern IDs corresponding to the pattern IDs page IDs and operation log data for the individual page IDs are related to one another. For example in the case of a segment transition route URL URL URL URL having a pattern ID of p operation log data for URL the first time URL URL the second time URL are related to be managed as shown in .
+
+If the determination indicates that the fetched record meets the analysis conditions in the utilization analysis policy table YES at S the utilization analysis unit extracts the result of the analysis and appends it to the analysis result list S .
+
+Subsequently the utilization analysis unit determines whether the transition pattern table includes any unprocessed record S . As a result if the transition pattern table includes an unprocessed record YES at S it returns to step S as there exists a record which has not been processed yet and processes the next record.
+
+Through repeating steps from S to S utilization analysis is performed on all records in the transition pattern table and a list of problems can be obtained.
+
+The utilization analysis policy table shown in manages data in which transition patterns utilization information and analysis results are related to one another. The transition patterns and the utilization information include conditions to determine problems. Specifically a transition pattern is composed of an evaluation metrics a default threshold and a condition utilization information is composed of an evaluation metrics a default threshold and a condition . An analysis result is composed of a target of improvement and points of improvement .
+
+For example according to the first row of the utilization analysis policy table if the conditions that the rate of rerouting is 30 or more and the staying time at a back step is three seconds or less are met the branch step b is the target of improvement and a modification is desired to solve the points of improvement .
+
+For example in the case of transitions among pages shown in the utilization information on the page URL indicates that the rate of rerouting is 40 and the average staying time under rerouting is five seconds which meets the conditions indicated on the first row of the utilization analysis policy table . Accordingly a modification as shown in is proposed.
+
+The exemplary output shown in displays the points of improvement on a chart of page transitions in the web application consequently a developer can easily realize the problems.
+
+As explained above as to analysis work which has been difficult in listing problems because of extensive evaluation metrics this embodiment achieves automatic listing of problems so that the analysis time can be significantly reduced.
+
+The foregoing embodiment has explained analysis of a web application including a workflow definition by way of example however this invention can analyze web applications without explicit workflow definitions as well. One way is analysis based on information on page transitions as indicated in . This method does not consider differences from the flow definition. Another way is analysis in which statistic processing is performed on the routing information of individual users to use a route appearing with high frequency as a virtual workflow definition. This method analyzes routes deviated from the frequently used route.
+
